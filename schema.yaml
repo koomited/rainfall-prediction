@@ -1,1 +1,15 @@
-params:
+COLUMNS:
+  time: object
+  temperature: float64
+  feels_like: float64
+  app_temp: float64
+  dew_point: float64
+  humidity: float64
+  wind_direction: float64
+  wind_speed: float64
+  wind_gust: float64
+  pressure_relative: float64
+  pressure_absolute: float64
+
+TARGET_COLUMN:
+  rainfall: float64
