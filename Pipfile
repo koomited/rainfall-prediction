@@ -7,9 +7,22 @@ name = "pypi"
 pandas = "*"
 scikit-learn = "*"
 flask = "*"
+matplotlib = "*"
+python-box = "*"
+pyyaml = "*"
+tqdm = "*"
+ensure = "*"
+joblib = "*"
+types-pyyaml = "*"
+seaborn = "*"
+xgboost = "*"
 
 [dev-packages]
 ipykernel = "*"
+mlflow = "*"
+setuptools = "*"
+pyyaml = "*"
+types-pyyaml = "*"
 
 [requires]
 python_version = "3.12"
