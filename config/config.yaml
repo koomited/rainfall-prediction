@@ -13,6 +13,7 @@ data_validation:
 data_transformation:
   root_dir: artifacts/data_transformation
   data_path: artifacts/data_ingestion/data.csv
+  test_size: 0.3
 
 
 model_trainer:
