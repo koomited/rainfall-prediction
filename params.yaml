@@ -1,1 +1,6 @@
-params:
+XGBoost:
+  n_estimators: 100         # Number of boosting rounds (trees)
+  max_depth: 4              # Maximum depth of each tree (controls model complexity)
+  learning_rate: 0.4     # Step size shrinkage used to prevent overfitting (aka eta)
+  subsample: 1            # Fraction of training samples used per tree (helps reduce overfitting)
+  colsample_bytree: 1   # Fraction of features (columns) used per tree (helps reduce overfitting)
