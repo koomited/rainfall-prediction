@@ -31,7 +31,6 @@ In this project, I am trying to implemente a production ready project using MLOp
 6. Update the components
 7. Update the pipeline 
 8. Update the main.py
-9. Update the app.py
 
 ```bash
 pipenv install ipykernel --dev

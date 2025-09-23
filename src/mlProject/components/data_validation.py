@@ -4,7 +4,6 @@ import os
 from mlProject.entity.config_entity import DataValidationConfig
 from mlProject import logger
 
-
 class DataValiadtion:
     def __init__(self, config: DataValidationConfig):
         self.config = config
@@ -18,7 +17,10 @@ class DataValiadtion:
             all_cols = list(data.columns)
             dict_cols_types = data.dtypes.apply(lambda x: x.name).to_dict()
 
-            all_schema = self.config.all_schema
+    
+            features = self.config.all_schema.COLUMNS
+            target = self.config.all_schema.TARGET_COLUMN
+            all_schema = {**features, **target}
 
             
             for col in all_schema:
