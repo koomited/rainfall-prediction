@@ -16,6 +16,7 @@ joblib = "*"
 types-pyyaml = "*"
 seaborn = "*"
 xgboost = "*"
+torch = "*"
 
 [dev-packages]
 ipykernel = "*"
