@@ -48,7 +48,8 @@ class ConfigurationManager:
             root_dir=Path(config.root_dir),
             data_path=Path(config.data_path),
             all_schema=schema,
-            test_size=config.test_size
+            test_size=config.test_size,
+            look_back=config.look_back
             
         )
         

@@ -15,9 +15,11 @@ class DataValidationConfig:
     STATUS_FILE: str
     all_schema: str
 
+
 @dataclass(frozen=True)
 class DataTransformationConfig:
     root_dir: Path
     data_path: Path
     all_schema: str
     test_size: float
+    look_back: int
