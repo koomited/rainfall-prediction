@@ -11,6 +11,10 @@ class DataTransformation:
     def __init__(self, config:DataTransformationConfig):
         self.config = config
         
+class DataTransformation:
+    def __init__(self, config:DataTransformationConfig):
+        self.config = config
+        
     def prepare_dataframe_for_lstm(self, df, 
                                    n_steps=7):
         df = dc(df)
@@ -47,7 +51,8 @@ class DataTransformation:
         features_no_time_clog = [f for f in features if f not in ["time", "is_clog"]]
         train_set.loc[:, features_no_time_clog + target] = train_set[features_no_time_clog + target].interpolate(method="spline", order=3) 
         test_set.loc[:, features_no_time_clog + target]  = test_set[features_no_time_clog + target].interpolate(method="spline", order=3)
- 
+        
+        
         train_set.drop(columns=["is_clog"], inplace=True)
         test_set.drop(columns=["is_clog"], inplace=True)
         
@@ -55,6 +60,10 @@ class DataTransformation:
                                    n_steps=self.config.look_back)
         test_set = self.prepare_dataframe_for_lstm(df=test_set, 
                                    n_steps=self.config.look_back)
+        
+        train_set.loc[:, "is_rain"] = (train_set[target[0]] > 0).astype(int)
+        test_set.loc[:, "is_rain"] = (test_set[target[0]] > 0).astype(int)
+
         
         train_set.to_csv(os.path.join(self.config.root_dir, "train.csv"))
         test_set.to_csv(os.path.join(self.config.root_dir, "test.csv"))
