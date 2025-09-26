@@ -13,3 +13,6 @@ COLUMNS:
 
 TARGET_COLUMN:
   rainfall: float64
+
+TARGET_COLUMN_CLASSIFICATION:
+  is_rain: int
