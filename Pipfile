@@ -15,15 +15,16 @@ ensure = "*"
 joblib = "*"
 types-pyyaml = "*"
 seaborn = "*"
-xgboost = "*"
-torch = "*"
+boto3 = "*"
+mlflow = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
-ipykernel = "*"
 mlflow = "*"
 setuptools = "*"
 pyyaml = "*"
 types-pyyaml = "*"
+ipykernel = "*"
 
 [requires]
 python_version = "3.12"

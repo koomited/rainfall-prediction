@@ -30,5 +30,9 @@ model_trainer:
 model_evaluation:
   root_dir: artifacts/model_evaluation
   test_data_path: artifacts/data_transformation/test.csv
-  model_path: artifacts/model_trainer/model.joblib
+  scaler_path: artifacts/model_trainer/scaler.joblib
+  classifier_path: artifacts/model_trainer/classification.joblib
+  regressor_path: artifacts/model_trainer/lstm.pth
   metric_file_name: artifacts/model_evaluation/metrics.json
+  mlflow_uri: http://ec2-54-91-2-27.compute-1.amazonaws.com:5000
+  batch_size: 8
