@@ -23,3 +23,17 @@ class DataTransformationConfig:
     all_schema: str
     test_size: float
     look_back: int
+    
+@dataclass(frozen=True)
+class ModelTrainerConfig:
+    root_dir: Path
+    train_data_path: Path
+    test_data_path: Path
+    scaler_name: str
+    classification_model_name: str
+    lstm_model_name: str
+    classification_model_params: dict
+    lstm_model_params: dict
+    target_column: dict
+    target_column_classification: dict
+    batch_size: int
