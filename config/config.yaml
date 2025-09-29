@@ -24,6 +24,7 @@ model_trainer:
   scaler_name: scaler.joblib
   classification_model_name: classification.joblib
   lstm_model_name: lstm.pth
+  batch_size: 8
 
 
 model_evaluation:

@@ -8,4 +8,6 @@ regression:
   input_size: 1
   hidden_size: 20
   num_stacked_layers: 4
+  learning_rate: 1e-3
+  num_epochs: 100
   
