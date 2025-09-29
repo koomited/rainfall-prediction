@@ -1,0 +1,14 @@
+artifact_uri: file:///home/ubuntu/africlimateai/rainfall-prediction/mlruns/754630638082997067/b9d183c31c234c3f883bd19f7d2bf8fe/artifacts
+end_time: 1759153097988
+entry_point_name: ''
+experiment_id: '754630638082997067'
+lifecycle_stage: active
+run_id: b9d183c31c234c3f883bd19f7d2bf8fe
+run_name: nebulous-cow-872
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1759153097943
+status: 3
+tags: []
+user_id: ubuntu

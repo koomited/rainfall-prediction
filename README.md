@@ -32,9 +32,9 @@ In this project, I am trying to implemente a production ready project using MLOp
 7. Update the pipeline 
 8. Update the main.py
 
-```bash
-pipenv install ipykernel --dev
+```bashpipenv install ipykernel --dev
 pipenv run python -m ipykernel install --user --name=rain-pred
+
 ```
 
 ```bash

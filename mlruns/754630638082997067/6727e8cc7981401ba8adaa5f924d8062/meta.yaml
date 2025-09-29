@@ -1,0 +1,14 @@
+artifact_uri: file:///home/ubuntu/africlimateai/rainfall-prediction/mlruns/754630638082997067/6727e8cc7981401ba8adaa5f924d8062/artifacts
+end_time: 1759152855067
+entry_point_name: ''
+experiment_id: '754630638082997067'
+lifecycle_stage: active
+run_id: 6727e8cc7981401ba8adaa5f924d8062
+run_name: clean-elk-706
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1759152855023
+status: 4
+tags: []
+user_id: ubuntu
