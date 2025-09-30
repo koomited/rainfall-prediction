@@ -3,7 +3,8 @@ from mlProject.utils.common import read_yaml, create_directories
 from mlProject.entity.config_entity import (DataIngestionConfig, 
                                             DataValidationConfig,
                                             DataTransformationConfig,
-                                            ModelTrainerConfig)
+                                            ModelTrainerConfig,
+                                            ModelEvaluationConfig)
 
 class ConfigurationManager:
     def __init__(self,
@@ -75,8 +76,35 @@ class ConfigurationManager:
             target_column = schema.TARGET_COLUMN,
             target_column_classification = schema.TARGET_COLUMN_CLASSIFICATION,
             batch_size=config.batch_size
+    
             
             
         )
 
         return model_trainer_config
+    
+    def get_model_evaluation_config(self) -> ModelEvaluationConfig:
+        config = self.config.model_evaluation
+        params = self.params
+        schema =  self.schema
+
+        create_directories([config.root_dir])
+
+        model_evaluation_config = ModelEvaluationConfig(
+            root_dir=config.root_dir,
+            test_data_path=config.test_data_path,
+            scaler_path = config.scaler_path,
+            classifier_path = config.classifier_path,
+            regressor_path = config.regressor_path,
+            classifier_params = params.classification,
+            regressor_params = params.regression,
+            metric_file_name = config.metric_file_name,
+            classification_target_column = schema.TARGET_COLUMN_CLASSIFICATION,
+            regression_target_column = schema.TARGET_COLUMN,
+            mlflow_uri=config.mlflow_uri,
+            batch_size=config.batch_size
+           
+        )
+
+        return model_evaluation_config
+
