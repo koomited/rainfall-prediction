@@ -67,5 +67,5 @@ Make sure you change these files [`config/config.yaml`](config/config.yaml) [`pa
 python main.py
 ```
 
-Then you can access your mlflow ui at [instance_PUBLUC_DNS.com:5000/](http://instance_PUBLUC_DNS.com:5000/) OR [localhost:5000](http://localhost:5000)
+Then you can access your mlflow ui at [instance_PUBLUC_DNS.com:5000/](http://instance_PUBLUC_DNS.com:5000/) or [localhost:5000](http://localhost:5000)
 
