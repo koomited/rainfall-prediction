@@ -25,7 +25,7 @@ import joblib
 from mlProject.constants import *
 from mlProject.utils.common import read_yaml, create_directories
 from mlProject import logger
-
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 
 
@@ -82,12 +82,12 @@ class ModelTrainer:
                     test_loader,
                     num_epochs, 
                     loss_function, 
-                    optimizer,
+                    optimizer, scheduler,
                     validate_one_epoch_function, device):
         model.train(True)
         for epoch in range(1, num_epochs+1):
             running_loss = 0.0
-            for batch_index, batch in enumerate(train_loader):
+            for _, batch in enumerate(train_loader):
                 x_batch, y_batch = batch[0].to(device), batch[1].to(device)
                 output,_ ,_= model(x_batch)        
 
@@ -97,12 +97,13 @@ class ModelTrainer:
                 loss.backward()
                 optimizer.step()
 
+            average_loss_across_batches = running_loss/len(train_loader)
 
             if epoch % 10 == 0:
-                average_loss_across_batches = running_loss/100
                 logger.info(f"Epoch :{epoch}, Loss: {average_loss_across_batches}")
                 validate_one_epoch_function(model, test_loader, loss_function, device)
             running_loss = 0.0
+            scheduler.step(average_loss_across_batches.detach().cpu().item())
             
         return model
 
@@ -180,6 +181,8 @@ class ModelTrainer:
         num_epochs = self.config.lstm_model_params.num_epochs
         optimizer = optim.Adam(model.parameters(), lr = leraning_rate)
         loss_function = nn.MSELoss()
+        factor, patience = float(self.config.lstm_model_params.scheduler_factor), int(self.config.lstm_model_params.scheduler_patience)
+        scheduler = ReduceLROnPlateau(optimizer, mode="min", factor=factor, patience=patience)
 
         trained_model = self.training(
                                     model,
@@ -187,7 +190,7 @@ class ModelTrainer:
                                     test_loader,
                                     num_epochs, 
                                     loss_function, 
-                                    optimizer,
+                                    optimizer, scheduler,
                                     self.validate_one_epoch,
                                     device=device)
 

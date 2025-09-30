@@ -21,6 +21,9 @@
 ## Overview
 In this project, I am trying to implemente a production ready project using MLOps best practices. We focus on prediction the rainfall using AfriClimate Sensor data in South Africa (Limpopo)
 
+
+This project is completely setup and run on an AWS EC2 linux machine. Youc can use this [video](https://www.youtube.com/watch?v=1ykg4YmbFVA&list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK)
+ to setup your remote machine create your postgres database for artifact registory and your S3 bucket. 
 ## Workflows
 
 1. Update config.yaml
@@ -37,6 +40,8 @@ pipenv run python -m ipykernel install --user --name=rain-pred
 
 ```
 
+# Setup
+
 ```bash
 python template.py
 ```
@@ -46,4 +51,21 @@ python template.py
 pipenv shell
 pip install -e .
 ```
+
+
+
+
+## Runing mlflow
+```bash
+mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri postgresql://mlflow:PASSWORD@RDS_ENDPOINT_URL:DB_PORT/DB_NAME --default-artifact-root s3://BUCKET_NAME
+
+```
+# Run model Training
+Make sure you change these files [`config/config.yaml`](config/config.yaml) [`params.yaml`](params.yaml) [`schema.yaml`](schema.yaml),  for your use particulary your mlflow uri in 
+
+```bash
+python main.py
+```
+
+Then you can access your mlflow ui at [instance_PUBLUC_DNS.com:5000/](instance_PUBLUC_DNS.com:5000/) OR [localhost:5000](localhost:5000)
 
