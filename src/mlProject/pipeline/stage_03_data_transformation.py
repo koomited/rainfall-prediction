@@ -5,6 +5,7 @@ from pathlib import Path
 
 STAGE_NAME = "Data Transformation Stage"
 
+
 class DataTransformationPipeline:
     def __init__(self):
         pass
