@@ -3,13 +3,16 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 import torch
+from pathlib import Path
+import joblib
 
+BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
 class PredictionPipeline:
     def __init__(self):
-        self.classifier = joblib.load(Path('artifacts/model_trainer/classification.joblib'))
-        self.scaler = joblib.load(Path('artifacts/model_trainer/scaler.joblib'))
-        self.regressor = torch.load(Path('artifacts/model_trainer/lstm.pth'), weights_only=False)
+        self.classifier = joblib.load(Path(BASE_DIR / 'artifacts/model_trainer/classification.joblib'))
+        self.scaler = joblib.load(Path(BASE_DIR / 'artifacts/model_trainer/scaler.joblib'))
+        self.regressor = torch.load(Path(BASE_DIR / 'artifacts/model_trainer/lstm.pth'), weights_only=False)
         
 
     
