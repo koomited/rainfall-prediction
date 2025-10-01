@@ -5,11 +5,16 @@ RUN pip install pipenv
 
 WORKDIR app
 
-COPY ["Pipfile", "Pipfile.lock", "./"]
+COPY . app
 
-RUN pipenv install --system --deploy
 
-COPY . ./
+# Free up space and install torch directly
+RUN pipenv install --deploy --system \
+    && RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu \
+    && rm -rf /root/.cache/pip
+
+
+
 
 EXPOSE 9696
 
