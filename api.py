@@ -1,4 +1,4 @@
-from mlProject.pipeline.prediction import PredictionPipeline
+from mlProject.pipeline.prediction import PredictionPipeline, RUN_ID
 from flask import Flask, request, jsonify
 import numpy as np
 
@@ -15,7 +15,8 @@ def prediction_endpoint():
     print("prediction: ", pred)
     
     result = {
-        "rainfall": pred
+        "rainfall": pred,
+        "model_version": RUN_ID
     }
     
     return jsonify(result)

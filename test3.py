@@ -1,0 +1,25 @@
+from lambda_function import lambda_handler
+
+event = {
+    "Records": [
+        {
+            "kinesis": {
+                "kinesisSchemaVersion": "1.0",
+                "partitionKey": "1",
+                "sequenceNumber": "49667636532760164205621325266490096894654679758160265218",
+                "data": "ewogICJpbmZvIjogWwogICAgMTYuNjg3NSwgMTYuNjg3NSwgMTYuNjc1LCAxMC4zNTYyNSwKICAgIDY5LjA4MzMzMzMzLCAxOTguODk1ODMzMzMsIDAuNTEwNDE2NjcsIDEuNTQxNjY2NjcsCiAgICAzMC4xODAyMDgzMywgMjguMzEwNDE2NjcsIDE0Ljg4NzUsIDE5Ljg2ODc1LAogICAgMjEuMTA4MzMzMzMsIDE3LjUxNDU4MzMzLCAxNy40ODMzMzMzMywgMTguMDY2NjY2NjcsCiAgICAxNy44Mzk1ODMzMywgMTQuODg3NSwgMTkuODY4NzUsIDIxLjA5NTgzMzMzLAogICAgMTcuNTE0NTgzMzMsIDE3LjQ4MzMzMzMzLCAxOC4wNjI1LCAxNy44Mzk1ODMzMywKICAgIDE1LjA0Mzc1LCAxOC42ODMzMzMzMywgMjAuMzQzNzUsIDE2LjkzMTI1LAogICAgMTYuNTA2MjUsIDE3LjYyOTE2NjY3LCAxOC4xNjQ1ODMzMywgMTAuOTUsCiAgICA3LjQ1NDE2NjY3LCA4LjcyMDgzMzMzLCA4LjU5NzkxNjY3LCA2LjYwODMzMzMzLAogICAgOC43ODEyNSwgMTEuNzc3MDgzMzMsIDc3Ljg5NTgzMzMzLCA0Ni4wMjA4MzMzMywKICAgIDQ4LjM1NDE2NjY3LCA1OC42NDU4MzMzMywgNTIuNTQxNjY2NjcsIDU4LjQzNzUsCiAgICA2OS41MjA4MzMzMywgMjczLjM1NDE2NjY3LCAxNjcuMzMzMzMzMzMsIDIzNi41ODMzMzMzMywKICAgIDEzMy4xMDQxNjY2NywgMTgxLjY2NjY2NjY3LCAyMTMuMDYyNSwgOTIuODc1LAogICAgMC40ODEyNSwgMi4wMzk1ODMzMywgMS41NzI5MTY2NywgMC44NDE2NjY2NywKICAgIDAuNjA2MjUsIDAuNTY0NTgzMzMsIDAuNzY0NTgzMzMsIDEuNjI1LAogICAgNS4yODc1LCAzLjcwMjA4MzMzLCAyLjA4NTQxNjY3LCAxLjU4MzMzMzMzLAogICAgMS42NTIwODMzMywgMi4xODk1ODMzMywgMzAuMTgyNzA4MzMsIDMwLjAwNTQxNjY3LAogICAgMjkuODQ5NTgzMzMsIDI5Ljk4OTE2NjY3LCAzMC4wNTcwODMzMywgMzAuMDI1ODMzMzMsCiAgICAzMC4xNDY2NjY2NywgMjguMzEzNTQxNjcsIDI4LjEzNjg3NSwgMjcuOTgwNjI1LAogICAgMjguMTIwNDE2NjcsIDI4LjE4NzkxNjY3LCAyOC4xNTcyOTE2NywgMjguMjc3NSwKICAgIDAuOCwgMC4wLCAwLjAsIDAuMCwKICAgIDAuMCwgMC4wLCAwLjAKICBdLAogICJldmVudF9pZCI6IDEyMwp9Cg==",
+                "approximateArrivalTimestamp": 1759418864.745
+            },
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1.0",
+            "eventID": "shardId-000000000000:49667636532760164205621325266490096894654679758160265218",
+            "eventName": "aws:kinesis:record",
+            "invokeIdentityArn": "arn:aws:iam::541690257764:role/lambda-kinesis-role",
+            "awsRegion": "us-east-1",
+            "eventSourceARN": "arn:aws:kinesis:us-east-1:541690257764:stream/rainfall-events"
+        }
+    ]
+}
+
+result = lambda_handler(event, context=None)
+print(result)

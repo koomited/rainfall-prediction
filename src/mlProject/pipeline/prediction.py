@@ -6,8 +6,9 @@ import torch
 from pathlib import Path
 import joblib
 import mlflow
+import os
 
-RUN_ID = "8de0cb304e844db8ae045f16c26c71db"
+RUN_ID = os.getenv('RUN_ID', "8de0cb304e844db8ae045f16c26c71db")
 
 S3_BASE_URL = f"s3://koomi-mlflow-artifacts-remote/3/{RUN_ID}/artifacts/"
 
