@@ -87,9 +87,9 @@ gunicorn --bind=0.0.0.0:9696 api:app
 
 # Deployment
 ## Deploy the model as web service
-In [`deployment/web-service`](deployment/web-service), run in the roor directory:
+In [`deployment/web-service`](deployment/web-service), run in the root directory:
 ```bash
-docker build -t rainfall-prediction-service:v1 -f deployment/web-service/Dockerfile ../../
+docker build -t rainfall-prediction-service:v1 .
 
 docker run -it --rm -p 9696:9696 rainfall-prediction-service:v1
 ```
