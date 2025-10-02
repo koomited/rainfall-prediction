@@ -5,16 +5,18 @@ from pathlib import Path
 import torch
 from pathlib import Path
 import joblib
+import mlflow
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+RUN_ID = "8de0cb304e844db8ae045f16c26c71db"
+
+S3_BASE_URL = f"s3://koomi-mlflow-artifacts-remote/3/{RUN_ID}/artifacts/"
 
 class PredictionPipeline:
     def __init__(self):
-        self.classifier = joblib.load(Path(BASE_DIR / 'artifacts/model_trainer/classification.joblib'))
-        self.scaler = joblib.load(Path(BASE_DIR / 'artifacts/model_trainer/scaler.joblib'))
-        self.regressor = torch.load(Path(BASE_DIR / 'artifacts/model_trainer/lstm.pth'), weights_only=False)
+        self.classifier = joblib.load(mlflow.artifacts.download_artifacts(f"{S3_BASE_URL}classifier/classification.joblib"))
+        self.scaler = joblib.load(mlflow.artifacts.download_artifacts(f"{S3_BASE_URL}scaler/scaler.joblib"))
+        self.regressor = torch.load(mlflow.artifacts.download_artifacts(f"{S3_BASE_URL}regressor/lstm.pth"), weights_only=False)
         
-
     
     def predict(self, data):
 

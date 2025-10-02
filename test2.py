@@ -1,7 +1,9 @@
-import requests
+from mlProject.pipeline import prediction
 import numpy as np
 
-data = list([ 16.6875    ,  16.6875    ,  16.675     ,  10.35625   ,
+prediction_pipe = prediction.PredictionPipeline()
+
+data = np.array([ 16.6875    ,  16.6875    ,  16.675     ,  10.35625   ,
         69.08333333, 198.89583333,   0.51041667,   1.54166667,
         30.18020833,  28.31041667,  14.8875    ,  19.86875   ,
         21.10833333,  17.51458333,  17.48333333,  18.06666667,
@@ -22,8 +24,6 @@ data = list([ 16.6875    ,  16.6875    ,  16.675     ,  10.35625   ,
         30.14666667,  28.31354167,  28.136875  ,  27.980625  ,
         28.12041667,  28.18791667,  28.15729167,  28.2775    ,
          0.8       ,   0.        ,   0.        ,   0.        ,
-         0.        ,   0.        ,   0.        ])
-data = {"info": data}
-url = "http://localhost:9696/predict"
-response = requests.post(url, json=data)
-print(response.json())
+         0.        ,   0.        ,   0.        ]).reshape(1,-1)
+
+print(prediction_pipe.predict(data))
