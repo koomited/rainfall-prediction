@@ -91,5 +91,137 @@ In [`deployment/web-service`](deployment/web-service), run in the root directory
 ```bash
 docker build -t rainfall-prediction-service:v1 .
 
-docker run -it --rm -p 9696:9696 rainfall-prediction-service:v1
+docker run -d -it --rm -p 9696:9696 rainfall-prediction-service:v1
+```
+
+# AWS kinesis for streaming
+
+
+```bash
+#   
+
+KINESIS_STREAM_INPUT=rainfall-events
+
+aws kinesis put-record \
+  --stream-name ${KINESIS_STREAM_INPUT} \
+  --partition-key 1 \
+  --cli-binary-format raw-in-base64-out \
+  --data '{
+  "info": [
+    16.6875, 16.6875, 16.675, 10.35625,
+    69.08333333, 198.89583333, 0.51041667, 1.54166667,
+    30.18020833, 28.31041667, 14.8875, 19.86875,
+    21.10833333, 17.51458333, 17.48333333, 18.06666667,
+    17.83958333, 14.8875, 19.86875, 21.09583333,
+    17.51458333, 17.48333333, 18.0625, 17.83958333,
+    15.04375, 18.68333333, 20.34375, 16.93125,
+    16.50625, 17.62916667, 18.16458333, 10.95,
+    7.45416667, 8.72083333, 8.59791667, 6.60833333,
+    8.78125, 11.77708333, 77.89583333, 46.02083333,
+    48.35416667, 58.64583333, 52.54166667, 58.4375,
+    69.52083333, 273.35416667, 167.33333333, 236.58333333,
+    133.10416667, 181.66666667, 213.0625, 92.875,
+    0.48125, 2.03958333, 1.57291667, 0.84166667,
+    0.60625, 0.56458333, 0.76458333, 1.625,
+    5.2875, 3.70208333, 2.08541667, 1.58333333,
+    1.65208333, 2.18958333, 30.18270833, 30.00541667,
+    29.84958333, 29.98916667, 30.05708333, 30.02583333,
+    30.14666667, 28.31354167, 28.136875, 27.980625,
+    28.12041667, 28.18791667, 28.15729167, 28.2775,
+    0.8, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0
+  ],
+  "event_id": 125
+}
+'
+```
+
+## Kinesis event
+```bash
+{
+    "Records": [
+        {
+            "kinesis": {
+                "kinesisSchemaVersion": "1.0",
+                "partitionKey": "1",
+                "sequenceNumber": "49667636532760164205621325266490096894654679758160265218",
+                "data": "ewogICJpbmZvIjogWwogICAgMTYuNjg3NSwgMTYuNjg3NSwgMTYuNjc1LCAxMC4zNTYyNSwKICAgIDY5LjA4MzMzMzMzLCAxOTguODk1ODMzMzMsIDAuNTEwNDE2NjcsIDEuNTQxNjY2NjcsCiAgICAzMC4xODAyMDgzMywgMjguMzEwNDE2NjcsIDE0Ljg4NzUsIDE5Ljg2ODc1LAogICAgMjEuMTA4MzMzMzMsIDE3LjUxNDU4MzMzLCAxNy40ODMzMzMzMywgMTguMDY2NjY2NjcsCiAgICAxNy44Mzk1ODMzMywgMTQuODg3NSwgMTkuODY4NzUsIDIxLjA5NTgzMzMzLAogICAgMTcuNTE0NTgzMzMsIDE3LjQ4MzMzMzMzLCAxOC4wNjI1LCAxNy44Mzk1ODMzMywKICAgIDE1LjA0Mzc1LCAxOC42ODMzMzMzMywgMjAuMzQzNzUsIDE2LjkzMTI1LAogICAgMTYuNTA2MjUsIDE3LjYyOTE2NjY3LCAxOC4xNjQ1ODMzMywgMTAuOTUsCiAgICA3LjQ1NDE2NjY3LCA4LjcyMDgzMzMzLCA4LjU5NzkxNjY3LCA2LjYwODMzMzMzLAogICAgOC43ODEyNSwgMTEuNzc3MDgzMzMsIDc3Ljg5NTgzMzMzLCA0Ni4wMjA4MzMzMywKICAgIDQ4LjM1NDE2NjY3LCA1OC42NDU4MzMzMywgNTIuNTQxNjY2NjcsIDU4LjQzNzUsCiAgICA2OS41MjA4MzMzMywgMjczLjM1NDE2NjY3LCAxNjcuMzMzMzMzMzMsIDIzNi41ODMzMzMzMywKICAgIDEzMy4xMDQxNjY2NywgMTgxLjY2NjY2NjY3LCAyMTMuMDYyNSwgOTIuODc1LAogICAgMC40ODEyNSwgMi4wMzk1ODMzMywgMS41NzI5MTY2NywgMC44NDE2NjY2NywKICAgIDAuNjA2MjUsIDAuNTY0NTgzMzMsIDAuNzY0NTgzMzMsIDEuNjI1LAogICAgNS4yODc1LCAzLjcwMjA4MzMzLCAyLjA4NTQxNjY3LCAxLjU4MzMzMzMzLAogICAgMS42NTIwODMzMywgMi4xODk1ODMzMywgMzAuMTgyNzA4MzMsIDMwLjAwNTQxNjY3LAogICAgMjkuODQ5NTgzMzMsIDI5Ljk4OTE2NjY3LCAzMC4wNTcwODMzMywgMzAuMDI1ODMzMzMsCiAgICAzMC4xNDY2NjY2NywgMjguMzEzNTQxNjcsIDI4LjEzNjg3NSwgMjcuOTgwNjI1LAogICAgMjguMTIwNDE2NjcsIDI4LjE4NzkxNjY3LCAyOC4xNTcyOTE2NywgMjguMjc3NSwKICAgIDAuOCwgMC4wLCAwLjAsIDAuMCwKICAgIDAuMCwgMC4wLCAwLjAKICBdLAogICJldmVudF9pZCI6IDEyMwp9Cg==",
+                "approximateArrivalTimestamp": 1759418864.745
+            },
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1.0",
+            "eventID": "shardId-000000000000:49667636532760164205621325266490096894654679758160265218",
+            "eventName": "aws:kinesis:record",
+            "invokeIdentityArn": "arn:aws:iam::541690257764:role/lambda-kinesis-role",
+            "awsRegion": "us-east-1",
+            "eventSourceARN": "arn:aws:kinesis:us-east-1:541690257764:stream/rainfall-events"
+        }
+    ]
+}
+```
+
+## Reag from a stream
+```bash
+KINESIS_STREAM_OUTPUT='rainfall-predictions'
+SHARD='shardId-000000000000'
+
+SHARD_ITERATOR=$(aws kinesis \
+    get-shard-iterator \
+        --shard-id ${SHARD} \
+        --shard-iterator-type TRIM_HORIZON \
+        --stream-name ${KINESIS_STREAM_OUTPUT} \
+        --query 'ShardIterator' \
+)
+
+RESULT=$(aws kinesis get-records --shard-iterator $SHARD_ITERATOR)
+
+echo ${RESULT} | jq -r '.Records[0].Data' | base64 --decode | jq
+```
+
+```bash
+
+export PREDICTION_STREAM_NAME='rainfall-predictions'
+export RUN_ID="8de0cb304e844db8ae045f16c26c71db"
+export TEST_RUN="True"
+
+python test3.py
+```
+
+```bash
+docker build -t stream-model-rainfall:v1 -f lambda_dockerfile .
+
+docker run -d -it --rm \
+    -p 8080:8080 \
+    -e PREDICTION_STREAM_NAME='rainfall-predictions' \
+    -e  RUN_ID="8de0cb304e844db8ae045f16c26c71db" \
+    -e TEST_RUN="True" \
+    -e AWS_DEFAULT_REGION="us-east-1" \
+    stream-model-rainfall:v1
+```
+
+## Publish lambda function image to ECR
+
+
+```bash
+aws ecr create-repository --repository-name rainfall-model
+
+```
+Logging in
+
+```bash
+aws ecr get-login-password --region us-east-1 \
+  | docker login \
+    --username AWS \
+    --password-stdin 541690257764.dkr.ecr.us-east-1.amazonaws.com
+```
+
+
+```bash
+REMOTE_URI="541690257764.dkr.ecr.us-east-1.amazonaws.com/rainfall-model"
+REMOTE_TAG="v1"
+REMOTE_IMAGE=${REMOTE_URI}:${REMOTE_TAG}
+
+LOCAL_IMAGE="stream-model-rainfall:v1"
+docker tag ${LOCAL_IMAGE} ${REMOTE_IMAGE}
+docker push ${REMOTE_IMAGE}
 ```
