@@ -10,13 +10,15 @@ import os
 
 RUN_ID = os.getenv('RUN_ID', "8de0cb304e844db8ae045f16c26c71db")
 
-S3_BASE_URL = f"s3://koomi-mlflow-artifacts-remote/3/{RUN_ID}/artifacts/"
 
 class PredictionPipeline:
-    def __init__(self):
-        self.classifier = joblib.load(mlflow.artifacts.download_artifacts(f"{S3_BASE_URL}classifier/classification.joblib"))
-        self.scaler = joblib.load(mlflow.artifacts.download_artifacts(f"{S3_BASE_URL}scaler/scaler.joblib"))
-        self.regressor = torch.load(mlflow.artifacts.download_artifacts(f"{S3_BASE_URL}regressor/lstm.pth"), weights_only=False)
+    def __init__(self, run_id):
+        
+        self.S3_BASE_URL = f"s3://koomi-mlflow-artifacts-remote/3/{run_id}/artifacts/"
+        
+        self.classifier = joblib.load(mlflow.artifacts.download_artifacts(f"{self.S3_BASE_URL}classifier/classification.joblib"))
+        self.scaler = joblib.load(mlflow.artifacts.download_artifacts(f"{self.S3_BASE_URL}scaler/scaler.joblib"))
+        self.regressor = torch.load(mlflow.artifacts.download_artifacts(f"{self.S3_BASE_URL}regressor/lstm.pth"), weights_only=False)
         
     
     def predict(self, data):

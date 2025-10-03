@@ -31,6 +31,7 @@ setuptools = "*"
 pyyaml = "*"
 types-pyyaml = "*"
 ipykernel = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.12"
