@@ -225,3 +225,17 @@ LOCAL_IMAGE="stream-model-rainfall:v1"
 docker tag ${LOCAL_IMAGE} ${REMOTE_IMAGE}
 docker push ${REMOTE_IMAGE}
 ```
+
+# Unit testing
+
+```bash 
+docker build -t stream-model-rainfall:v2 -f lambda_dockerfile .
+
+docker run -d -it --rm \
+    -p 8080:8080 \
+    -e PREDICTION_STREAM_NAME='rainfall-predictions' \
+    -e  RUN_ID="8de0cb304e844db8ae045f16c26c71db" \
+    -e TEST_RUN="True" \
+    -e AWS_DEFAULT_REGION="us-east-1" \
+    stream-model-rainfall:v2
+```
