@@ -239,3 +239,9 @@ docker run -d -it --rm \
     -e AWS_DEFAULT_REGION="us-east-1" \
     stream-model-rainfall:v2
 ```
+# LocalStack
+
+Delete a kinesis stream
+```bash
+aws --endpoint-url=http://localhost:4566 kinesis delete-stream --stream-name ride_predictions
+``
