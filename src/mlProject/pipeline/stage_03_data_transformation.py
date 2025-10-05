@@ -1,7 +1,8 @@
+from pathlib import Path
+
+from mlProject import logger
 from mlProject.config.configuration import ConfigurationManager
 from mlProject.components.data_transformation import DataTransformation
-from mlProject import logger
-from pathlib import Path
 
 STAGE_NAME = "Data Transformation Stage"
 
@@ -9,7 +10,7 @@ STAGE_NAME = "Data Transformation Stage"
 class DataTransformationPipeline:
     def __init__(self):
         pass
-    
+
     def main(self):
         try:
             with open(Path("artifacts/data_validation/status.txt"), "r") as f:
@@ -18,7 +19,9 @@ class DataTransformationPipeline:
             if status == "True":
                 config = ConfigurationManager()
                 data_transformation_config = config.get_data_transformation_config()
-                data_transformation = DataTransformation(config=data_transformation_config)
+                data_transformation = DataTransformation(
+                    config=data_transformation_config
+                )
                 data_transformation.train_test_spliting()
 
             else:
@@ -28,8 +31,7 @@ class DataTransformationPipeline:
             print(e)
 
 
-
-if __name__=='__main__':
+if __name__ == '__main__':
     try:
         logger.info(f">>>>>> stage {STAGE_NAME} started <<<<<<")
         obj = DataTransformationPipeline()
@@ -38,5 +40,3 @@ if __name__=='__main__':
     except Exception as e:
         logger.exception(e)
         raise e
-    
-    

@@ -36,14 +36,13 @@ actual_record = json.loads(records[0]["Data"])
 pprint(actual_record)
 
 expected_record = {
-                'model': 'rainfall-prediction',
-                "version": "8de0cb304e844db8ae045f16c26c71db",
-                "prediction": {
-                    'rainfall': 0,
-                    'rainfall_history_id': actual_record["prediction"]["rainfall_history_id"]
-                    
-                },
-    }
-  
+    'model': 'rainfall-prediction',
+    "version": "8de0cb304e844db8ae045f16c26c71db",
+    "prediction": {
+        'rainfall': 0,
+        'rainfall_history_id': actual_record["prediction"]["rainfall_history_id"],
+    },
+}
+
 diff = DeepDiff(actual_record, expected_record, significant_digits=3)
 print('diff=', diff)

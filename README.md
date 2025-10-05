@@ -229,19 +229,21 @@ docker push ${REMOTE_IMAGE}
 # Unit testing
 
 ```bash 
-docker build -t stream-model-rainfall:v2 -f lambda_dockerfile .
-
-docker run -d -it --rm \
-    -p 8080:8080 \
-    -e PREDICTION_STREAM_NAME='rainfall-predictions' \
-    -e  RUN_ID="8de0cb304e844db8ae045f16c26c71db" \
-    -e TEST_RUN="True" \
-    -e AWS_DEFAULT_REGION="us-east-1" \
-    stream-model-rainfall:v2
+pytest
 ```
-# LocalStack
 
-Delete a kinesis stream
+
+# LocalStack integration tests
+
 ```bash
-aws --endpoint-url=http://localhost:4566 kinesis delete-stream --stream-name ride_predictions
+./run.sh
 ``
+
+# Code quality 
+
+## Pylint isort black 
+```bash
+isort .
+black .
+pylint --recursive=y .
+```

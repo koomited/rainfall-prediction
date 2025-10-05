@@ -15,18 +15,19 @@ print("Actual response:")
 print(json.dumps(actual_response, indent=2))
 
 expected_response = expected_prediction = {
-        "predictions": [
-            {
-                'model': 'rainfall-prediction',
-                "version": "8de0cb304e844db8ae045f16c26c71db",
-                "prediction": {
-                    'rainfall': 0,
-                    'rainfall_history_id': actual_response["predictions"][0]["prediction"]["rainfall_history_id"]
-                    
-                },
-            }
-        ]
-    }
+    "predictions": [
+        {
+            'model': 'rainfall-prediction',
+            "version": "8de0cb304e844db8ae045f16c26c71db",
+            "prediction": {
+                'rainfall': 0,
+                'rainfall_history_id': actual_response["predictions"][0]["prediction"][
+                    "rainfall_history_id"
+                ],
+            },
+        }
+    ]
+}
 
 diff = DeepDiff(actual_response, expected_response, significant_digits=3)
 print('diff=', diff)
@@ -34,4 +35,4 @@ print('diff=', diff)
 assert 'type_changes' not in diff
 assert 'values_changed' not in diff
 
-assert  actual_response == expected_response
+assert actual_response == expected_response

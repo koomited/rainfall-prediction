@@ -1,5 +1,5 @@
-from dataclasses import dataclass
 from pathlib import Path
+from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
@@ -7,7 +7,8 @@ class DataIngestionConfig:
     root_dir: Path
     source_URL: str
     local_data_file: Path
-    
+
+
 @dataclass(frozen=True)
 class DataValidationConfig:
     root_dir: Path
@@ -23,7 +24,8 @@ class DataTransformationConfig:
     all_schema: str
     test_size: float
     look_back: int
-    
+
+
 @dataclass(frozen=True)
 class ModelTrainerConfig:
     root_dir: Path
@@ -37,7 +39,8 @@ class ModelTrainerConfig:
     target_column: dict
     target_column_classification: dict
     batch_size: int
-    
+
+
 @dataclass(frozen=True)
 class ModelEvaluationConfig:
     root_dir: Path
