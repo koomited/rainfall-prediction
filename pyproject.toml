@@ -1,0 +1,27 @@
+[tool.pylint.message_control]
+
+disable = [
+        "missing-function-docstring",
+        "missing-final-newline",
+        "missing-class-docstring",
+        "missing-module-docstring",
+        "invalid-name",
+        "too-few-public-methods",
+        "wrong-import-order"
+]
+
+[tool.black]
+
+line.length = 88
+target-version = ['py312']
+skip-string-normalization = true
+
+[tool.isort]
+multi_line_output = 3
+length_sort = true
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "src",
+    "."
+]

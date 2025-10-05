@@ -1,12 +1,12 @@
-import json
-import base64
-import boto3
 import os
-import numpy as np
+import json
 import uuid
+import base64
+
+import boto3
+import numpy as np
+
 from mlProject.pipeline.prediction import PredictionPipeline
-
-
 
 # REGION_NAME = os.getenv("AWS_DEFAULT_REGION", "us-east-1")
 # kinesis_client = boto3.client(
@@ -15,12 +15,10 @@ from mlProject.pipeline.prediction import PredictionPipeline
 # )
 
 
-
 def base64_decode(encoded_data):
     decoded_data = base64.b64decode(encoded_data).decode('utf-8')
     rainfall_event = json.loads(decoded_data)
     return rainfall_event
-
 
 
 class ModelService:
@@ -31,41 +29,37 @@ class ModelService:
             self.callbacks = []
         else:
             self.callbacks = callbacks or []
-    
-    
+
     def prepare_feature(self, data):
-        return np.array(data).reshape(1,-1)
+        return np.array(data).reshape(1, -1)
 
     def predict(self, data):
         return self.model.predict(data)
-    
+
     def lambda_handler(self, event):
-        
+
         # print(json.dumps(event))
         predictions_events = []
         for record in event['Records']:
             encoded_data = record['kinesis']['data']
             rainfall_event = base64_decode(encoded_data)
 
-
             rainfall_history_event = rainfall_event['info']
             rainfall_history_id = str(uuid.uuid4())
-            
+
             rainfall_history_event = self.prepare_feature(rainfall_history_event)
-            
-            
+
             prediction = self.predict(rainfall_history_event)
 
             prediction_event = {
                 'model': 'rainfall-prediction',
                 'version': self.model_version,
-                'prediction':{
+                'prediction': {
                     'rainfall': prediction,
-                    'rainfall_history_id': rainfall_history_id
-                    
-                }
+                    'rainfall_history_id': rainfall_history_id,
+                },
             }
-            
+
             # if not TEST_RUN:
             #     kinesis_client.put_record(
             #         StreamName=PREDICTION_STREAM_NAME,
@@ -74,14 +68,10 @@ class ModelService:
             #     )
 
             predictions_events.append(prediction_event)
-            
-        for callback in self.callbacks:
-                callback(predictions_events)
-        return {
-            'predictions': predictions_events
-        }
-    
 
+        for callback in self.callbacks:
+            callback(predictions_events)
+        return {'predictions': predictions_events}
 
 
 class KinesisCallback:
