@@ -93,6 +93,6 @@ data = list(
     ]
 )
 data = {"info": data}
-url = "http:/:9696/predict"
+url = "http:/ec2-98-89-33-190.compute-1.amazonaws.com:9696/predict"
 response = requests.post(url, json=data)
 print(response.json())
