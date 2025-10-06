@@ -93,6 +93,6 @@ data = list(
     ]
 )
 data = {"info": data}
-url = "http://localhost:9696/predict"
+url = "http:/:9696/predict"
 response = requests.post(url, json=data)
 print(response.json())
