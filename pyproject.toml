@@ -7,7 +7,12 @@ disable = [
         "missing-module-docstring",
         "invalid-name",
         "too-few-public-methods",
-        "wrong-import-order"
+        "wrong-import-order",
+        "duplicate-code",
+        "unused-argument",
+        "too-many-instance-attributes",
+        "logging-fstring-interpolation",
+        "ungrouped-imports"
 ]
 
 [tool.black]

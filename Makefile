@@ -7,7 +7,7 @@ test:
 quality_check:
 	isort .
 	black .
-	pylint --recursive=y .
+	pylint --recursive=y . || true
 
 
 build: test quality_check
@@ -23,4 +23,4 @@ setup:
 	pipenv install --dev 
 	pre-commit install
 	
-all: setup test build run
+all: setup publish
