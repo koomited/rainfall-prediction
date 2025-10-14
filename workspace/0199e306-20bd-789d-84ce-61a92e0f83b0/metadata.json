@@ -1,0 +1,17 @@
+{
+  "id": "0199e306-20bd-789d-84ce-61a92e0f83b0",
+  "name": "Rainfal Limpopo Data Duality Dash",
+  "description": "My project Description",
+  "dashboard": {
+    "name": "Rainfal Limpopo Data Duality Dash",
+    "panels": [],
+    "tabs": [],
+    "tab_id_to_panel_ids": {}
+  },
+  "team_id": null,
+  "org_id": null,
+  "date_from": null,
+  "date_to": null,
+  "created_at": "2025-10-14T14:00:53.693378",
+  "version": "1"
+}
