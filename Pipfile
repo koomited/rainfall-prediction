@@ -27,6 +27,8 @@ gunicorn = "*"
 deepdiff = "*"
 evidently = "==0.6.7"
 prefect = "==3.4.17"
+psycopg = "*"
+psycopg-binary = "*"
 
 [dev-packages]
 mlflow = "*"
