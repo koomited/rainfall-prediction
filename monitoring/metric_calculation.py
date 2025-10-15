@@ -31,8 +31,7 @@ SEND_TIMEOUT = 10
 rand = random.Random()
 
 create_table_statement = """
-drop table if exists metrics;
-create table metrics(
+create table if not exists metrics(
     timestamp timestamp,
     prediction_drift float,
     num_drifted_columns integer,
@@ -57,10 +56,10 @@ class TimeSeriesDataset(Dataset):
             return self.X[i], self.y[i]
         
 
-def predict(X_df, y_test, run_id, output_file):
+def predict(X_df, y, run_id):
     model_object = PredictionPipeline(run_id=run_id)
     
-    y_test = y_test.reshape(-1, 1)
+    y = y.values.reshape(-1, 1)
 
     # Scale features
     X_test = X_df.values
@@ -72,9 +71,9 @@ def predict(X_df, y_test, run_id, output_file):
     vars_dim = X_test_lstm.shape[1]
     X_test_lstm = X_test_lstm.reshape((-1, vars_dim, 1))
     X_test_tensor = torch.tensor(X_test_lstm).float()
-    y_test_tensor = torch.tensor(y_test).float()
+    y_tensor = torch.tensor(y).float()
     
-    test_dataset = TimeSeriesDataset(X_test_tensor, y_test_tensor)
+    test_dataset = TimeSeriesDataset(X_test_tensor, y_tensor)
     batch_size = 8
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
@@ -110,7 +109,7 @@ def predict(X_df, y_test, run_id, output_file):
     
     
     df_results = dc(X_df)
-    df_results.loc[:, "rainfall_actual"] = y_test
+    df_results.loc[:, "rainfall_actual"] = y
     df_results.loc[:, "rainfall_predicted"] = predictions
     df_results.loc[:, "date"] =pd.to_datetime(df_results.index)
     
@@ -118,8 +117,55 @@ def predict(X_df, y_test, run_id, output_file):
     return df_results
 
 
-
+num_features = ['temperature', 'feels_like', 'app_temp', 'dew_point', 'humidity',
+       'wind_direction', 'wind_speed', 'wind_gust', 'pressure_relative',
+       'pressure_absolute', 'temperature(t-1)', 'temperature(t-2)',
+       'temperature(t-3)', 'temperature(t-4)', 'temperature(t-5)',
+       'temperature(t-6)', 'temperature(t-7)', 'feels_like(t-1)',
+       'feels_like(t-2)', 'feels_like(t-3)', 'feels_like(t-4)',
+       'feels_like(t-5)', 'feels_like(t-6)', 'feels_like(t-7)',
+       'app_temp(t-1)', 'app_temp(t-2)', 'app_temp(t-3)', 'app_temp(t-4)',
+       'app_temp(t-5)', 'app_temp(t-6)', 'app_temp(t-7)', 'dew_point(t-1)',
+       'dew_point(t-2)', 'dew_point(t-3)', 'dew_point(t-4)', 'dew_point(t-5)',
+       'dew_point(t-6)', 'dew_point(t-7)', 'humidity(t-1)', 'humidity(t-2)',
+       'humidity(t-3)', 'humidity(t-4)', 'humidity(t-5)', 'humidity(t-6)',
+       'humidity(t-7)', 'wind_direction(t-1)', 'wind_direction(t-2)',
+       'wind_direction(t-3)', 'wind_direction(t-4)', 'wind_direction(t-5)',
+       'wind_direction(t-6)', 'wind_direction(t-7)', 'wind_speed(t-1)',
+       'wind_speed(t-2)', 'wind_speed(t-3)', 'wind_speed(t-4)',
+       'wind_speed(t-5)', 'wind_speed(t-6)', 'wind_speed(t-7)',
+       'wind_gust(t-1)', 'wind_gust(t-2)', 'wind_gust(t-3)', 'wind_gust(t-4)',
+       'wind_gust(t-5)', 'wind_gust(t-6)', 'wind_gust(t-7)',
+       'pressure_relative(t-1)', 'pressure_relative(t-2)',
+       'pressure_relative(t-3)', 'pressure_relative(t-4)',
+       'pressure_relative(t-5)', 'pressure_relative(t-6)',
+       'pressure_relative(t-7)', 'pressure_absolute(t-1)',
+       'pressure_absolute(t-2)', 'pressure_absolute(t-3)',
+       'pressure_absolute(t-4)', 'pressure_absolute(t-5)',
+       'pressure_absolute(t-6)', 'pressure_absolute(t-7)', 'rainfall(t-1)',
+       'rainfall(t-2)', 'rainfall(t-3)', 'rainfall(t-4)', 'rainfall(t-5)',
+       'rainfall(t-6)', 'rainfall(t-7)']
 begin = datetime.datetime(2025, 6, 29, 0, 0)
+
+column_mapping = ColumnMapping(
+    target=None,
+    prediction="rainfall_predicted",
+    numerical_features=num_features
+)
+
+report = Report(
+    metrics = [
+        ColumnDriftMetric(
+            column_name="rainfall_predicted"
+        ),
+        DatasetDriftMetric(),
+        DatasetMissingValuesMetric()
+        
+    ]
+)
+
+
+
 
 # num_features = ['passenger_count', 'trip_distance','fare_amount', 'total_amount']
 # cat_features = ['PULocationID', 'DOLocationID']
@@ -156,15 +202,19 @@ def prep_db():
     ) as conn:
         conn.execute(create_table_statement)
 
+from prefect.cache_policies import NO_CACHE
 
-@task
+@task(cache_policy=NO_CACHE)
 def calculate_metrics(curr, i):
-    current_data = raw_data[(raw_data.date<=(begin+datetime.timedelta(i)))&
-                           (raw_data.date<=(begin+datetime.timedelta(i+1)))]
+    current_data = raw_data[(raw_data.date>=(begin+datetime.timedelta(days = i)))&
+                           (raw_data.date<=(begin+datetime.timedelta(days = i+1)))]
     
-    current_data.fillna(0, inplace=True)
-    current_data["prediction"] = model.predict(current_data[num_features+cat_features])
-    report.run(reference_data=reference_data, current_data=current_data, column_mapping=column_mapping)
+    current_data= predict(current_data[num_features],
+                            y=current_data.rainfall_actual, 
+                            run_id=RUN_ID)
+    report.run(reference_data=reference_data.reset_index(drop=True), 
+               current_data=current_data.reset_index(drop=True), 
+               column_mapping=column_mapping)
     result = report.as_dict()
     
     # prediction drift
@@ -179,6 +229,7 @@ def calculate_metrics(curr, i):
 ), prediction_drift, num_drifted_columns, share_missing_values)
     )
 
+
 @flow    
 def batch_monitoring_backfill():
     prep_db()
@@ -186,7 +237,7 @@ def batch_monitoring_backfill():
     with psycopg.connect(
         "host=localhost port=5432 dbname=test user=postgres password=example",autocommit=True
         ) as conn:
-        for i in range(0, 27):
+        for i in range(0, 27, 8):
             with conn.cursor() as curr:
                 calculate_metrics(curr, i)
             
