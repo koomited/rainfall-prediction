@@ -21,6 +21,10 @@
 ## Overview
 In this project, I am trying to implemente a production ready project using MLOps best practices. We focus on prediction the rainfall using AfriClimate Sensor data in South Africa (Limpopo)
 
+<p align="center">
+  <img src="images/cicd.drawio.png">
+</p>
+
 
 This project is completely setup and run on an AWS EC2 linux machine. Youc can use this [video](https://www.youtube.com/watch?v=1ykg4YmbFVA&list=PL3MmuxUbc_hIUISrluw_A7wDSmfOhErJK)
  to setup your remote machine create your postgres database for artifact registory and your S3 bucket. 
