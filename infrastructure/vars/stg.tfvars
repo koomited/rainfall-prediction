@@ -5,3 +5,4 @@ model_bucket = "koomi-stg-mlflow-rainfall"
 lambda_function_local_path = "../lambda_function.py"
 docker_image_local_path = "../lambda_dockerfile"
 lambda_function_name = "stg-prediction-lambda"
+
