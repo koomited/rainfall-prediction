@@ -36,7 +36,7 @@ jobs:
 
       - name: Lint
         working-directory:  'rainfall-prediction/**'
-        run: pipenv run pylint --recursive=y . | true
+        run: pipenv run pylint --recursive=y . || true
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
