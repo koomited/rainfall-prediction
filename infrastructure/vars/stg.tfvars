@@ -1,0 +1,7 @@
+ecr_repo_name = "stg-stream-model-rainfll"
+source_stream_name = "stg-rainfall-events"
+output_stream_name = "stg-rainfall-predictions"
+model_bucket = "koomi-stg-mlflow-rainfall"
+lambda_function_local_path = "../lambda_function.py"
+docker_image_local_path = "../lambda_dockerfile"
+lambda_function_name = "stg-prediction-lambda"
