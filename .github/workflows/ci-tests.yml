@@ -4,12 +4,12 @@ on:
     branches:
       - 'main'
     paths:
-      - 'rainfall-prediction/**'
+      - './**'
   push:
     branches:
       - 'main'
     paths:
-      - 'rainfall-prediction/**'
+      - './**'
 
 env:
   AWS_DEFAULT_REGION: 'us-east-1'
@@ -35,7 +35,7 @@ jobs:
         run: pipenv run pytest tests
 
       - name: Lint
-        working-directory:  'rainfall-prediction/**'
+        working-directory:  './**'
         run: pipenv run pylint --recursive=y . || true
 
       - name: Configure AWS Credentials
@@ -47,7 +47,7 @@ jobs:
 
 
       - name: Integration Test
-        working-directory:  "rainfall-prediction/integration-test"
+        working-directory:  "./integration-test"
         run:  
           . run.sh
   tf-plan:
@@ -63,7 +63,7 @@ jobs:
       - uses: hashicorp/setup-terraform@v2
       - name: TF plan
         id: plan
-        working-directory:  "rainfall-prediction/infrastructure"
+        working-directory:  "./infrastructure"
         run:  
           terraform init --backend-config="key=mlops-zoomcamp-prod.tfstate" --reconfigure && terraform plan --var-file vars/prod.tfvars && terraform apply --var-file vars/prod.tfvars
 
